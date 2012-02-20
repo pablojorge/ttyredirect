@@ -4,10 +4,10 @@ import os
 import sys
 import errno
 
-if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print "usage:\n\t%s command [args..]" % sys.argv[0]
-        sys.exit(1)
+def main(argv):
+    if len(argv) < 2:
+        print "usage:\n\t%s command [args..]" % argv[0]
+        return 1
     
     pid, master_fd = os.forkpty()
 
@@ -24,7 +24,11 @@ if __name__ == "__main__":
                 print >> sys.stderr, "Error:", e
 
         ret, status = os.waitpid(pid, 0)
+        return os.WEXITSTATUS(status)
 
     elif pid == 0:
         os.execvp(sys.argv[1], sys.argv[1:])
         sys.exit(2)
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))
