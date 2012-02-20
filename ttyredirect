@@ -1,0 +1,30 @@
+#!/usr/bin/env python
+
+import os
+import sys
+import errno
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        print "usage:\n\t%s command [args..]" % sys.argv[0]
+        sys.exit(1)
+    
+    pid, master_fd = os.forkpty()
+
+    if pid > 0:
+        master = os.fdopen(master_fd, "r", 0)
+
+        try:
+            data = master.readline()
+            while data:
+                sys.stdout.write(data)
+                data = master.readline()
+        except IOError, e:
+            if e.errno != errno.EIO:
+                print >> sys.stderr, "Error:", e
+
+        ret, status = os.waitpid(pid, 0)
+
+    elif pid == 0:
+        os.execvp(sys.argv[1], sys.argv[1:])
+        sys.exit(2)

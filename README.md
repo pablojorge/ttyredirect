@@ -7,6 +7,7 @@ Simple script to capture the output of a program sent to both stdout and stderr 
 When you redirect both stdout and stderr to a file with the shell, you may get the output in the wrong order. This happens because tty drivers flush the buffer on newlines, but regular files flush only when the buffer becomes full.
 
 Example:
+
     $ cat test.py
     import sys
     
