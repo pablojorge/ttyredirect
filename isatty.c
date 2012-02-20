@@ -3,7 +3,7 @@
 
 int main(int argc, char *argv[])
 {
-    if (isatty(1)) {
+    if (isatty(STDOUT_FILENO)) {
         printf("stdout is a tty\n");
     } else {
         printf("stdout is NOT tty\n");

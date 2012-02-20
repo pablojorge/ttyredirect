@@ -27,7 +27,7 @@ def main(argv):
         return os.WEXITSTATUS(status)
 
     elif pid == 0:
-        os.execvp(sys.argv[1], sys.argv[1:])
+        os.execvp(argv[1], argv[1:])
         sys.exit(2)
 
 if __name__ == "__main__":
